@@ -1,0 +1,8 @@
+@keyframes pulse {
+    0%,  100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.pulse-button {
+    animation: pulse  1s infinite ease-in-out;
+}

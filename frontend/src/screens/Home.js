@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+import './Home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faTimes, faArrowRight, faPlay } from '@fortawesome/free-solid-svg-icons';
 
@@ -166,8 +167,8 @@ function Home() {
                                     />
                                 </div>
                                 <div>
-                                    <button onClick={handleStart} style={{}}>
-                                        <FontAwesomeIcon icon={faPlay} size="3x" />
+                                    <button onClick={handleStart} style={{padding: 20, borderRadius: '50%', border: 'none', backgroundColor: '#005B81'}}>
+                                        <FontAwesomeIcon icon={faPlay} color={'#003B53'} size="3x" />
                                     </button>
                                 </div>
                             </div>
@@ -183,8 +184,8 @@ function Home() {
                             <>
                                 <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}>Click to start</p>
 
-                                <button onClick={handleMic} style={{}}>
-                                    <FontAwesomeIcon icon={faMicrophone} size="3x" />
+                                <button onClick={handleMic} style={{padding: 20, borderRadius: '50%', border: 'none'}}>
+                                    <FontAwesomeIcon icon={faPlay} color={'white'} size="3x" />
                                 </button>
                             </>
                         )}
@@ -207,6 +208,7 @@ function Home() {
                         }}>
                             {imageUrl && <img src={imageUrl} alt="Generated Image" style={{ width: '90%', height: '90%', borderRadius: '25px', boxShadow: '0  0  8px  3px rgba(255,  255,  255,  0.5)' }} />}
                         </div>
+                        
                         <div style={{
                             position: 'absolute',
                             top: '0',
@@ -229,19 +231,13 @@ function Home() {
                                 {transcript}
                                 </p>
                             </div>
+
+                            <button className="pulse-button" onClick={handleMic} style={{animation: 'pulse  2s infinite', marginTop: 30, padding: 20, borderRadius: '50%', border: 'none', backgroundColor: 'white'}}>
+                            <FontAwesomeIcon icon={faMicrophone} color={'#005B81'} size="3x" />
+                        </button>
                             
                         </div>
-                        <button onClick={handleMic} style={{
-                             position: 'absolute', bottom: '7%', right: '15%',
-                             animation: 'pulse  2s infinite',
-                                '@keyframes pulse': {
-                                    '0%': { transform: 'scale(1)' },
-                                    '50%': { transform: 'scale(1.1)' },
-                                    '100%': { transform: 'scale(1)' },
-                                },
-                             }}>
-                            <FontAwesomeIcon icon={faMicrophone} size="3x" />
-                        </button>
+                        
                     </div>
                 )}
             </div>
