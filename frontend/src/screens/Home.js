@@ -9,38 +9,66 @@ function Home() {
 
     useEffect(() => {
         const words = transcript.split(' ');
-        if (words.length >= 20 && transcript.length > 0) {
+        if (words.length >=  20 && transcript.length >  0) {
             console.log("chunk:", transcript); // Log the transcript
-            resetTranscript(); // Reset the transcript
+    
+            // Function to send data to the Flask app
+            const sendData = async () => {
+                try {
+                    const response = await fetch('http://localhost:8000/transcript', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ transcript: transcript }),
+                        mode: 'cors',
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+    
+                    const data = await response.json();
+                    console.log(data.message);
+                } catch (error) {
+                    console.error('Network error:', error);
+                }
+            };
+    
+            // Call the function to send the transcript
+            sendData();
+    
+            // Reset the transcript
+            resetTranscript();
         }
     }, [transcript, resetTranscript]);
 
-    useEffect(() => {
-        // Function to fetch data from the Flask app
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:8000/', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    mode: 'cors',
-                });
+    // useEffect(() => {
+    //     // Function to fetch data from the Flask app
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await fetch('http://localhost:8000/', {
+    //                 method: 'GET',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //                 mode: 'cors',
+    //             });
         
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+    //             if (!response.ok) {
+    //                 throw new Error(`HTTP error! status: ${response.status}`);
+    //             }
         
-                const data = await response.json();
-                console.log(data.message); 
-            } catch (error) {
-                console.error('Network error:', error);
-            }
-        };
+    //             const data = await response.json();
+    //             console.log(data.message); 
+    //         } catch (error) {
+    //             console.error('Network error:', error);
+    //         }
+    //     };
 
-        // Call the function when the component mounts
-        fetchData();
-    }, []);
+    //     // Call the function when the component mounts
+    //     fetchData();
+    // }, []);
 
     useEffect(() => {
         if (listening) {

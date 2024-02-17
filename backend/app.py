@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -15,3 +16,13 @@ app.add_middleware(
 @app.get("/")
 async def hello():
     return {"message": "Hello from FastAPI!"}
+
+class TranscriptModel(BaseModel):
+    transcript: str
+
+@app.post("/transcript")
+async def receive_transcript(transcript: TranscriptModel):
+    # Process the transcript here
+    print(transcript.transcript)
+    
+    return {"message": "Transcript received successfully!"}
