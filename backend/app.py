@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from generate_media import generate_desc, generate_image_url
 
 app = FastAPI()
 
@@ -24,5 +25,10 @@ class TranscriptModel(BaseModel):
 async def receive_transcript(transcript: TranscriptModel):
     # Process the transcript here
     print(transcript.transcript)
+    image_desc = generate_desc(transcript.transcript)
+    print("Image description is ", image_desc)
+    image_url = generate_image_url(image_desc)
+    print("Image url is ", image_url)
+
     
-    return {"message": "Transcript received successfully!"}
+    return {"message": image_url}
