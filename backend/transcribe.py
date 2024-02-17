@@ -45,6 +45,7 @@ class MyRecognizeCallback(RecognizeCallback):
     def __init__(self):
         RecognizeCallback.__init__(self)
         self.transcript = []
+        self.stop_recognition = False
 
     def on_transcription(self, transcript):
         self.transcript += transcript
@@ -62,6 +63,9 @@ class MyRecognizeCallback(RecognizeCallback):
         print('Service is listening')
 
     def on_hypothesis(self, hypothesis):
+        if self.stop_recognition:
+            print("stopping the recognition", self.transcript)
+            sys.exit(0)
         print("hypothesis", hypothesis)
 
     def on_data(self, data):
@@ -85,8 +89,16 @@ def recognize_using_weboscket():
     #     # This might involve calling a method on the speech_to_text object
     #     # or setting a flag that the callback checks to stop processing
 
+    def stop_recognition_after_timeout():
+        time.sleep(5)
+        mycallback.stop_recognition = True
+
     # Start the recognition process
     mycallback = MyRecognizeCallback()
+
+    timer_thread = threading.Thread(target=stop_recognition_after_timeout)
+    timer_thread.start()
+
     speech_to_text.recognize_using_websocket(audio=audio_source,
                                              content_type='audio/l16; rate=44100',
                                              recognize_callback=mycallback,
@@ -98,7 +110,7 @@ def recognize_using_weboscket():
         print(segment["transcript"])
         chunk += segment["transcript"]
 
-    print(chunk)
+    print('finalized', chunk)
     return chunk
 
 
@@ -141,18 +153,19 @@ print("Enter CTRL+C to end recording...")
 stream.start_stream()
 
 try:
-    recognize_thread = Thread(target=recognize_using_weboscket, args=())
-    recognize_thread.start()
+    # recognize_thread = Thread(target=recognize_using_weboscket, args=())
+    # recognize_thread.start()
+    recognize_using_weboscket()
 
     # while True:
     #     pass
-    time.sleep(2)
+    # time.sleep(5)
 
-    # stop recording
-    stream.stop_stream()
-    stream.close()
-    audio.terminate()
-    audio_source.completed_recording()
+    # # stop recording
+    # stream.stop_stream()
+    # stream.close()
+    # audio.terminate()
+    # audio_source.completed_recording()
 except KeyboardInterrupt:
     # stop recording
     stream.stop_stream()
