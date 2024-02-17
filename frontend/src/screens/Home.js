@@ -139,7 +139,7 @@ function Home() {
                 {!listening && (
                     <div>
                         <p style={{ textAlign: 'center', fontSize: '30px', margin: 0, color: 'white' }}>Welcome to</p>
-                        <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '110px', margin: 0, color: 'white', textShadow: '2px   2px   4px rgba(255,  255,  255,  0.5)' }}>luna</p>
+                        <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '120px', margin: 0, color: 'white', textShadow: '0  0  10px  5px rgba(255,  255,  255,  0.5)',}}>luna</p>
                         <div style={{ height: '40vh' }} />
 
 
@@ -188,7 +188,7 @@ function Home() {
                             left: '0',
                             width: '1024px',
                             height: '100%',
-                            border: '2px solid green',
+                            // border: '2px solid green',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -201,7 +201,7 @@ function Home() {
                             left: '1040px',
                             right: '0',
                             height: '100%',
-                            border: '2px solid red',
+                            // border: '2px solid red',
                             padding: '16px',
                         }}>
                             <div style={{
