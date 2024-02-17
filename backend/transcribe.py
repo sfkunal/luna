@@ -103,6 +103,7 @@ def recognize_using_weboscket():
         while not mycallback.stop_recognition:
             time.sleep(5)
             print("sending message:", mycallback.transcript)
+            mycallback.transcript = []
 
     print_thread = threading.Thread(target=print_transcript_periodically)
     print_thread.start()
