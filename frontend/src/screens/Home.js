@@ -75,11 +75,17 @@ function Home() {
 
     const handleMic = () => {
         if (!listening) {
+            setShowTitle(true);
             resetTranscript();
         }
+        if (listening) {
+            setListening(false);
+            setShowTitle(false);
+            setStoryTitle('');
+        }
         //setListening(!listening);
-        setShowTitle(true);
-        console.log('listening', listening);
+        // setShowTitle(true);
+        // console.log('listening', listening);
     };
 
     const handleTitleChange = (event) => {
@@ -91,9 +97,9 @@ function Home() {
         if (!listening) {
             resetTranscript();
         }
-        if (storyTitle && storyTitle.length >  0) {
+        if (storyTitle && storyTitle.length > 0) {
             setLoading(true); // Start loading
-    
+
             try {
                 const response = await fetch('http://localhost:8000/titleScreen', {
                     method: 'POST',
@@ -103,11 +109,11 @@ function Home() {
                     body: JSON.stringify({ transcript: storyTitle }),
                     mode: 'cors',
                 });
-    
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-    
+
                 const data = await response.json();
                 console.log(data.message);
                 setImageUrl(data.message); // Set the image URL state
@@ -175,16 +181,19 @@ function Home() {
                     </div>
                 )}
                 {listening && (
-                    <div>
+                    <div style={{}}>
                         <div style={{
                             position: 'absolute',
                             top: '0',
                             left: '0',
                             width: '1024px',
                             height: '100%',
-                            border: '2px solid white'
+                            border: '2px solid green',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                         }}>
-                            {imageUrl && <img src={imageUrl} alt="Generated Image" style={{ width: '100%', height: '100%' }} />}
+                            {imageUrl && <img src={imageUrl} alt="Generated Image" style={{ width: '90%', height: '90%', borderRadius: '25px', boxShadow: '0  0  8px  3px rgba(255,  255,  255,  0.5)' }} />}
                         </div>
                         <div style={{
                             position: 'absolute',
@@ -195,7 +204,20 @@ function Home() {
                             border: '2px solid red',
                             padding: '16px',
                         }}>
-                            {transcript}
+                            <div style={{
+                                marginTop: '30px',
+                                border: '0.5px solid black', // Correctly set the border,
+                                height: '70%',
+                                backgroundColor: '#003145',
+                                borderRadius: '15px',
+                                boxShadow: '0  0  8px  3px rgba(255,  255,  255,  0.5)',
+                                padding: '20px',
+                            }}>
+                                <p style={{color: 'white', fontSize: '25px'}}>
+                                {transcript}
+                                </p>
+                            </div>
+                            
                         </div>
                         <button onClick={handleMic} style={{ position: 'absolute', bottom: 10, right: 10 }}>
                             <FontAwesomeIcon icon={faTimes} size="3x" />
