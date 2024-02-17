@@ -7,6 +7,9 @@ function Home() {
     const { transcript, resetTranscript } = useSpeechRecognition()
     const [listening, setListening] = useState(false);
     const [imageUrl, setImageUrl] = useState(null); // New state variable for the image URL
+    const [showTitle, setShowTitle] = useState(false);
+    const [storyTitle, setStoryTitle] = useState('');
+
 
     useEffect(() => {
         const words = transcript.split(' ');
@@ -73,8 +76,14 @@ function Home() {
         if (!listening) {
             resetTranscript();
         }
-        setListening(!listening);
+        //setListening(!listening);
+        setShowTitle(true);
         console.log('listening', listening);
+    };
+
+    const handleTitleChange = (event) => {
+        setStoryTitle(event.target.value);
+        console.log(storyTitle);
     };
 
 
@@ -91,6 +100,16 @@ function Home() {
                         <p style={{ textAlign: 'center', fontSize: '30px', margin: 0, color: 'white' }}>Welcome to</p>
                         <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '110px', margin: 0, color: 'white', textShadow: '2px   2px   4px rgba(255,  255,  255,  0.5)' }}>luna</p>
                         <div style={{ height: '40vh' }} />
+
+
+                        {showTitle && (
+                            <input
+                                name="storyTitle"
+                                placeholder="Title your story?"
+                                value={storyTitle} // Set the input value to the state
+                                onChange={handleTitleChange} // Update the state when the input value changes
+                            />
+                        )}
 
                         <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}>Click to start</p>
 
