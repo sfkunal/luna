@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faTimes, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 function Home() {
     const { transcript, resetTranscript } = useSpeechRecognition()
@@ -9,6 +9,7 @@ function Home() {
     const [imageUrl, setImageUrl] = useState(null); // New state variable for the image URL
     const [showTitle, setShowTitle] = useState(false);
     const [storyTitle, setStoryTitle] = useState('');
+    const [loading, setLoading] = useState(false);
 
 
     useEffect(() => {
@@ -83,7 +84,41 @@ function Home() {
 
     const handleTitleChange = (event) => {
         setStoryTitle(event.target.value);
-        console.log(storyTitle);
+        // console.log(storyTitle);
+    };
+
+    const handleStart = async () => {
+        if (!listening) {
+            resetTranscript();
+        }
+        if (storyTitle && storyTitle.length >  0) {
+            setLoading(true); // Start loading
+    
+            try {
+                const response = await fetch('http://localhost:8000/titleScreen', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ transcript: storyTitle }),
+                    mode: 'cors',
+                });
+    
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+    
+                const data = await response.json();
+                console.log(data.message);
+                setImageUrl(data.message); // Set the image URL state
+            } catch (error) {
+                console.error('Network error:', error);
+            } finally {
+                setLoading(false); // End loading
+                setListening(!listening);
+                console.log('listening', listening);
+            }
+        }
     };
 
 
@@ -102,20 +137,41 @@ function Home() {
                         <div style={{ height: '40vh' }} />
 
 
-                        {showTitle && (
-                            <input
-                                name="storyTitle"
-                                placeholder="Title your story?"
-                                value={storyTitle} // Set the input value to the state
-                                onChange={handleTitleChange} // Update the state when the input value changes
-                            />
+                        {(showTitle && !loading) && (
+                            <div>
+                                <div>
+                                    <input
+                                        name="storyTitle"
+                                        placeholder="Title your story?"
+                                        value={storyTitle} // Set the input value to the state
+                                        onChange={handleTitleChange} // Update the state when the input value changes
+                                    />
+                                </div>
+                                <div>
+                                    <button onClick={handleStart} style={{}}>
+                                        <FontAwesomeIcon icon={faArrowRight} size="3x" />
+                                    </button>
+                                </div>
+                            </div>
                         )}
 
-                        <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}>Click to start</p>
+                        {(showTitle && loading) && (
+                            <div>
+                                <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}>Getting all set up...</p>
+                            </div>
+                        )}
 
-                        <button onClick={handleMic} style={{}}>
-                            <FontAwesomeIcon icon={faMicrophone} size="3x" />
-                        </button>
+                        {!showTitle && (
+                            <>
+                                <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}>Click to start</p>
+
+                                <button onClick={handleMic} style={{}}>
+                                    <FontAwesomeIcon icon={faMicrophone} size="3x" />
+                                </button>
+                            </>
+                        )}
+
+
                     </div>
                 )}
                 {listening && (
