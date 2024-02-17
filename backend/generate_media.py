@@ -29,7 +29,7 @@ def generate_image_url(image_desc):
   )
 
   image_url = response.data[0].url
-  print(image_url)
+  # print(image_url)
   return image_url
 
 # end_time = time.time()

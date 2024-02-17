@@ -35,7 +35,6 @@ async def receive_transcript(transcript: TranscriptModel):
 
 @app.post("/titleScreen")
 async def create_title_screen(transcript: TranscriptModel):
-    image_desc = generate_desc(transcript.transcript)
-    image_url = generate_image_url(image_desc)
+    image_url = generate_image_url(transcript.transcript)
     print("Title screen url is : ", image_url)
     return {"message": image_url}
