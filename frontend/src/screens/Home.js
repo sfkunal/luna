@@ -3,7 +3,6 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import './Home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faTimes, faArrowRight, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { ClipLoader } from 'react-spinners';
 
 function Home() {
     const { transcript, resetTranscript } = useSpeechRecognition()
