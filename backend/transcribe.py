@@ -144,8 +144,15 @@ try:
     recognize_thread = Thread(target=recognize_using_weboscket, args=())
     recognize_thread.start()
 
-    while True:
-        pass
+    # while True:
+    #     pass
+    time.sleep(2)
+
+    # stop recording
+    stream.stop_stream()
+    stream.close()
+    audio.terminate()
+    audio_source.completed_recording()
 except KeyboardInterrupt:
     # stop recording
     stream.stop_stream()
