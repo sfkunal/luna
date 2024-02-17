@@ -6,11 +6,41 @@ import { faMicrophone, faTimes } from '@fortawesome/free-solid-svg-icons';
 function Home() {
     const { transcript, resetTranscript } = useSpeechRecognition()
     const [listening, setListening] = useState(false);
-    const prevTranscriptRef = useRef();
 
     useEffect(() => {
-        prevTranscriptRef.current = transcript;
-    }, [transcript]);
+        const words = transcript.split(' ');
+        if (words.length >= 20 && transcript.length > 0) {
+            console.log("chunk:", transcript); // Log the transcript
+            resetTranscript(); // Reset the transcript
+        }
+    }, [transcript, resetTranscript]);
+
+    useEffect(() => {
+        // Function to fetch data from the Flask app
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'cors',
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+        
+                const data = await response.json();
+                console.log(data.message); 
+            } catch (error) {
+                console.error('Network error:', error);
+            }
+        };
+
+        // Call the function when the component mounts
+        fetchData();
+    }, []);
 
     useEffect(() => {
         if (listening) {
@@ -35,15 +65,6 @@ function Home() {
         }
     }, [listening]);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (prevTranscriptRef.current !== transcript) {
-                console.log('Transcript changed:', transcript);
-                prevTranscriptRef.current = transcript;
-            }
-        },  5000);
-        return () => clearInterval(interval);
-    }, [transcript]);
 
     const handleMic = () => {
         if (!listening) {
@@ -67,7 +88,6 @@ function Home() {
                         <p style={{ textAlign: 'center', fontSize: '30px', margin: 0, color: 'white' }}>Welcome to</p>
                         <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '110px', margin: 0, color: 'white', textShadow: '2px   2px   4px rgba(255,  255,  255,  0.5)' }}>luna</p>
                         <div style={{ height: '40vh' }} />
-                        {/* <SpeechToText /> */}
 
                         <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}>Click to start</p>
 

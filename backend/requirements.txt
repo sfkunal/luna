@@ -2,3 +2,8 @@ pyaudio
 ibm_watson
 ibm_cloud_sdk_core
 openai
+flask
+flask-cors
+watchdog
+fastapi
+uvicorn
