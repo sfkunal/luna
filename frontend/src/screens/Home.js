@@ -6,12 +6,13 @@ import { faMicrophone, faTimes } from '@fortawesome/free-solid-svg-icons';
 function Home() {
     const { transcript, resetTranscript } = useSpeechRecognition()
     const [listening, setListening] = useState(false);
+    const [imageUrl, setImageUrl] = useState(null); // New state variable for the image URL
 
     useEffect(() => {
         const words = transcript.split(' ');
-        if (words.length >=  20 && transcript.length >  0) {
+        if (words.length >= 20 && transcript.length > 0) {
             console.log("chunk:", transcript); // Log the transcript
-    
+
             // Function to send data to the Flask app
             const sendData = async () => {
                 try {
@@ -23,52 +24,26 @@ function Home() {
                         body: JSON.stringify({ transcript: transcript }),
                         mode: 'cors',
                     });
-    
+
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
-    
+
                     const data = await response.json();
                     console.log(data.message);
+                    setImageUrl(data.message); // Set the image URL state
                 } catch (error) {
                     console.error('Network error:', error);
                 }
             };
-    
+
             // Call the function to send the transcript
             sendData();
-    
+
             // Reset the transcript
             resetTranscript();
         }
     }, [transcript, resetTranscript]);
-
-    // useEffect(() => {
-    //     // Function to fetch data from the Flask app
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await fetch('http://localhost:8000/', {
-    //                 method: 'GET',
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                 },
-    //                 mode: 'cors',
-    //             });
-        
-    //             if (!response.ok) {
-    //                 throw new Error(`HTTP error! status: ${response.status}`);
-    //             }
-        
-    //             const data = await response.json();
-    //             console.log(data.message); 
-    //         } catch (error) {
-    //             console.error('Network error:', error);
-    //         }
-    //     };
-
-    //     // Call the function when the component mounts
-    //     fetchData();
-    // }, []);
 
     useEffect(() => {
         if (listening) {
@@ -133,7 +108,9 @@ function Home() {
                             width: '1024px',
                             height: '100%',
                             border: '2px solid white'
-                        }} />
+                        }}>
+                            {imageUrl && <img src={imageUrl} alt="Generated Image" style={{ width: '100%', height: '100%' }} />}
+                        </div>
                         <div style={{
                             position: 'absolute',
                             top: '0',
