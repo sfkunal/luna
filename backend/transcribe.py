@@ -5,7 +5,9 @@
 # initialised as a queue. The pyaudio stream would be continuosly adding
 # recordings to the queue, and the websocket client would be sending the
 # recordings to the speech to text service
-
+import threading
+import time
+import sys
 import pyaudio
 from ibm_watson import SpeechToTextV1
 from ibm_watson.websocket import RecognizeCallback, AudioSource
@@ -42,9 +44,10 @@ speech_to_text = SpeechToTextV1(authenticator=authenticator)
 class MyRecognizeCallback(RecognizeCallback):
     def __init__(self):
         RecognizeCallback.__init__(self)
+        self.transcript = []
 
     def on_transcription(self, transcript):
-        print(transcript)
+        self.transcript += transcript
 
     def on_connected(self):
         print('Connection was successful')
@@ -59,7 +62,7 @@ class MyRecognizeCallback(RecognizeCallback):
         print('Service is listening')
 
     def on_hypothesis(self, hypothesis):
-        print(hypothesis)
+        print("hypothesis", hypothesis)
 
     def on_data(self, data):
         print(data)
@@ -68,12 +71,36 @@ class MyRecognizeCallback(RecognizeCallback):
         print("Connection closed")
 
 # this function will initiate the recognize service and pass in the AudioSource
-def recognize_using_weboscket(*args):
+def recognize_using_weboscket():
+    # # Create a timer that will stop the recognition after the timeout
+    # time.sleep(12)
+    # print("Timeout reached. Stopping recognition...")
+    # stream.stop_stream()
+    # stream.close()
+    # audio.terminate()
+    # audio_source.completed_recording()
+    # sys.exit(0)
+
+    #     # Here you would need to stop the recognition process
+    #     # This might involve calling a method on the speech_to_text object
+    #     # or setting a flag that the callback checks to stop processing
+
+    # Start the recognition process
     mycallback = MyRecognizeCallback()
     speech_to_text.recognize_using_websocket(audio=audio_source,
                                              content_type='audio/l16; rate=44100',
                                              recognize_callback=mycallback,
                                              interim_results=True)
+
+    # Process the transcript
+    chunk = ""
+    for segment in mycallback.transcript:
+        print(segment["transcript"])
+        chunk += segment["transcript"]
+
+    print(chunk)
+    return chunk
+
 
 ###############################################
 #### Prepare the for recording using Pyaudio ##
