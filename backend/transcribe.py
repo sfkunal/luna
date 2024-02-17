@@ -48,7 +48,11 @@ class MyRecognizeCallback(RecognizeCallback):
         self.stop_recognition = False
 
     def on_transcription(self, transcript):
+        # print('cont', transcript)
         self.transcript += transcript
+        if self.stop_recognition:
+            print("sending message:", self.transcript)
+            self.stop_recognition = False
 
     def on_connected(self):
         print('Connection was successful')
@@ -63,13 +67,12 @@ class MyRecognizeCallback(RecognizeCallback):
         print('Service is listening')
 
     def on_hypothesis(self, hypothesis):
-        if self.stop_recognition:
-            print("stopping the recognition", self.transcript)
-            sys.exit(0)
-        print("hypothesis", hypothesis)
+        pass
+        # print("hypothesis", hypothesis)
 
     def on_data(self, data):
-        print(data)
+        pass
+        # print(data)
 
     def on_close(self):
         print("Connection closed")
@@ -90,14 +93,19 @@ def recognize_using_weboscket():
     #     # or setting a flag that the callback checks to stop processing
 
     def stop_recognition_after_timeout():
-        time.sleep(5)
+        time.sleep(3)
         mycallback.stop_recognition = True
 
     # Start the recognition process
     mycallback = MyRecognizeCallback()
 
-    timer_thread = threading.Thread(target=stop_recognition_after_timeout)
-    timer_thread.start()
+    def print_transcript_periodically():
+        while not mycallback.stop_recognition:
+            time.sleep(5)
+            print("sending message:", mycallback.transcript)
+
+    print_thread = threading.Thread(target=print_transcript_periodically)
+    print_thread.start()
 
     speech_to_text.recognize_using_websocket(audio=audio_source,
                                              content_type='audio/l16; rate=44100',
@@ -105,13 +113,13 @@ def recognize_using_weboscket():
                                              interim_results=True)
 
     # Process the transcript
-    chunk = ""
-    for segment in mycallback.transcript:
-        print(segment["transcript"])
-        chunk += segment["transcript"]
+    # chunk = ""
+    # for segment in mycallback.transcript:
+    #     print(segment["transcript"])
+    #     chunk += segment["transcript"]
 
-    print('finalized', chunk)
-    return chunk
+    # print('finalized', chunk)
+    # return chunk
 
 
 ###############################################
