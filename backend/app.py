@@ -29,8 +29,6 @@ async def receive_transcript(transcript: TranscriptModel):
     print("Image description is ", image_desc)
     image_url = generate_image_url(image_desc)
     print("Image url is ", image_url)
-
-    
     return {"message": image_url}
 
 @app.post("/titleScreen")

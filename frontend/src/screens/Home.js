@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faTimes, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faTimes, faArrowRight, faPlay } from '@fortawesome/free-solid-svg-icons';
 
 function Home() {
     const { transcript, resetTranscript } = useSpeechRecognition()
@@ -139,7 +139,7 @@ function Home() {
                 {!listening && (
                     <div>
                         <p style={{ textAlign: 'center', fontSize: '30px', margin: 0, color: 'white' }}>Welcome to</p>
-                        <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '120px', margin: 0, color: 'white', textShadow: '0  0  10px  5px rgba(255,  255,  255,  0.5)',}}>luna</p>
+                        <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '120px', margin: 0, color: 'white', textShadow: '0  0  20px  10px rgba(255,  255,  255,  0.5)',}}>luna</p>
                         <div style={{ height: '40vh' }} />
 
 
@@ -151,11 +151,23 @@ function Home() {
                                         placeholder="Title your story?"
                                         value={storyTitle} // Set the input value to the state
                                         onChange={handleTitleChange} // Update the state when the input value changes
+                                        style={{
+                                            width: '250px', // Increase the width
+                                            height: '50px', // Increase the height
+                                            padding: '10px', // Add some padding for better appearance
+                                            borderRadius: '15px', // Increase the border-radius for curvature
+                                            border: '1px solid white', // Remove the default border
+                                            backgroundColor: 'rgba(0,   91,   129,   0.25)', // Match the background color
+                                            color: 'white', // Text color
+                                            fontSize: '16px', // Increase the font size
+                                            marginBottom: '80px', // Add some margin at the bottom
+                                            boxShadow: '0  0  10px rgba(255,  255,  255,  0.5)'
+                                        }}
                                     />
                                 </div>
                                 <div>
                                     <button onClick={handleStart} style={{}}>
-                                        <FontAwesomeIcon icon={faArrowRight} size="3x" />
+                                        <FontAwesomeIcon icon={faPlay} size="3x" />
                                     </button>
                                 </div>
                             </div>
@@ -219,8 +231,16 @@ function Home() {
                             </div>
                             
                         </div>
-                        <button onClick={handleMic} style={{ position: 'absolute', bottom: 10, right: 10 }}>
-                            <FontAwesomeIcon icon={faTimes} size="3x" />
+                        <button onClick={handleMic} style={{
+                             position: 'absolute', bottom: '7%', right: '15%',
+                             animation: 'pulse  2s infinite',
+                                '@keyframes pulse': {
+                                    '0%': { transform: 'scale(1)' },
+                                    '50%': { transform: 'scale(1.1)' },
+                                    '100%': { transform: 'scale(1)' },
+                                },
+                             }}>
+                            <FontAwesomeIcon icon={faMicrophone} size="3x" />
                         </button>
                     </div>
                 )}
