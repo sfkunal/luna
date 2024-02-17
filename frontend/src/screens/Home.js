@@ -3,6 +3,7 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import './Home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faTimes, faArrowRight, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { ClipLoader } from 'react-spinners';
 
 function Home() {
     const { transcript, resetTranscript } = useSpeechRecognition()
@@ -140,7 +141,7 @@ function Home() {
                 {!listening && (
                     <div>
                         <p style={{ textAlign: 'center', fontSize: '30px', margin: 0, color: 'white' }}>Welcome to</p>
-                        <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '120px', margin: 0, color: 'white', textShadow: '0  0  20px  10px rgba(255,  255,  255,  0.5)',}}>luna</p>
+                        <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '120px', margin: 0, color: 'white', textShadow: '0  0  20px rgba(255,  255,  255,  1.0)' }}>luna</p>
                         <div style={{ height: '40vh' }} />
 
 
@@ -167,7 +168,7 @@ function Home() {
                                     />
                                 </div>
                                 <div>
-                                    <button onClick={handleStart} style={{padding: 20, borderRadius: '50%', border: 'none', backgroundColor: '#005B81'}}>
+                                    <button onClick={handleStart} style={{ padding: 20, borderRadius: '50%', border: 'none', backgroundColor: '#005B81' }}>
                                         <FontAwesomeIcon icon={faPlay} color={'#003B53'} size="3x" />
                                     </button>
                                 </div>
@@ -175,16 +176,23 @@ function Home() {
                         )}
 
                         {(showTitle && loading) && (
-                            <div>
-                                <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}>Getting all set up...</p>
+                            <>
+                            <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}>Getting all set up...</p>
+                            <div className="spinner">
+                                <div className="rect1"></div>
+                                <div className="rect2"></div>
+                                <div className="rect3"></div>
+                                <div className="rect4"></div>
+                                <div className="rect5"></div>
                             </div>
+                            </>
                         )}
 
                         {!showTitle && (
                             <>
                                 <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}>Click to start</p>
 
-                                <button onClick={handleMic} style={{padding: 20, borderRadius: '50%', border: 'none'}}>
+                                <button onClick={handleMic} style={{ padding: 20, borderRadius: '50%', border: 'none' }}>
                                     <FontAwesomeIcon icon={faPlay} color={'white'} size="3x" />
                                 </button>
                             </>
@@ -208,7 +216,7 @@ function Home() {
                         }}>
                             {imageUrl && <img src={imageUrl} alt="Generated Image" style={{ width: '90%', height: '90%', borderRadius: '25px', boxShadow: '0  0  8px  3px rgba(255,  255,  255,  0.5)' }} />}
                         </div>
-                        
+
                         <div style={{
                             position: 'absolute',
                             top: '0',
@@ -227,17 +235,17 @@ function Home() {
                                 boxShadow: '0  0  8px  3px rgba(255,  255,  255,  0.5)',
                                 padding: '20px',
                             }}>
-                                <p style={{color: 'white', fontSize: '25px'}}>
-                                {transcript}
+                                <p style={{ color: 'white', fontSize: '25px' }}>
+                                    {transcript}
                                 </p>
                             </div>
 
-                            <button className="pulse-button" onClick={handleMic} style={{animation: 'pulse  2s infinite', marginTop: 30, padding: 20, borderRadius: '50%', border: 'none', backgroundColor: 'white'}}>
-                            <FontAwesomeIcon icon={faMicrophone} color={'#005B81'} size="3x" />
-                        </button>
-                            
+                            <button className="pulse-button" onClick={handleMic} style={{ animation: 'pulse  2s infinite', marginTop: 30, padding: 20, borderRadius: '50%', border: 'none', backgroundColor: 'white' }}>
+                                <FontAwesomeIcon icon={faMicrophone} color={'#005B81'} size="3x" />
+                            </button>
+
                         </div>
-                        
+
                     </div>
                 )}
             </div>
