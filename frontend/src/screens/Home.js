@@ -7,7 +7,7 @@ import { faMicrophone, faTimes, faArrowRight, faCirclePlay } from '@fortawesome/
 function Home() {
     const { transcript, resetTranscript } = useSpeechRecognition()
     const [listening, setListening] = useState(false);
-    const [imageUrl, setImageUrl] = useState(null); // New state variable for the image URL
+    const [imageUrl, setImageUrl] = useState(null);
     const [showTitle, setShowTitle] = useState(false);
     const [storyTitle, setStoryTitle] = useState('');
     const [loading, setLoading] = useState(false);
@@ -157,18 +157,18 @@ function Home() {
             <div style={{
                 padding: '16px', boxShadow: '0   1px   2px rgba(0,   0,   0,   0.05)', borderRadius: '4px', textAlign: 'center',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
             }}>
 
                 {!listening && (
-                    <div style={{ marginTop: '100px' }}>
+                    <div style={{ marginTop: '100px', height: '400px' }}>
                         <p style={{ textAlign: 'center', fontSize: '30px', margin: 0, color: 'white' }}>Welcome to</p>
                         <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '120px', margin: 0, color: 'white', textShadow: '0  0  20px rgba(255,  255,  255,  1.0)' }}>luna</p>
                         <div style={{ height: '15vh' }} />
 
 
                         {(showTitle && !loading) && (
-                            <div>
+                            <div style={{height: '100px'}}>
                                 <div>
                                     <input
                                         name="storyTitle"
@@ -244,12 +244,11 @@ function Home() {
                             left: '0',
                             width: '1024px',
                             height: '100%',
-                            // border: '2px solid green',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                            {imageUrl && <img src={imageUrl} alt="Generated Image" loading={"lazy"} style={{ width: '90%', height: '90%', borderRadius: '25px', boxShadow: '0  0  8px  3px rgba(255,  255,  255,  0.5)' }} />}
+                            {imageUrl && <img src={imageUrl} alt="AI Generated" loading={"lazy"} style={{ width: '90%', height: '90%', borderRadius: '25px', boxShadow: '0  0  8px  3px rgba(255,  255,  255,  0.5)' }} />}
                         </div>
 
                         <div style={{
@@ -258,12 +257,11 @@ function Home() {
                             left: '1040px',
                             right: '0',
                             height: '100%',
-                            // border: '2px solid red',
                             padding: '16px',
                         }}>
                             <div style={{
                                 marginTop: '30px',
-                                border: '0.5px solid black', // Correctly set the border,
+                                border: '0.5px solid black',
                                 height: '70%',
                                 backgroundColor: '#003145',
                                 borderRadius: '15px',
