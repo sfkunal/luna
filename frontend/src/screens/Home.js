@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import './Home.css';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faTimes, faArrowRight, faCirclePlay } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faCirclePlay } from '@fortawesome/free-solid-svg-icons';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
 function Home() {
     const { transcript, resetTranscript } = useSpeechRecognition()
@@ -12,7 +12,6 @@ function Home() {
     const [storyTitle, setStoryTitle] = useState('');
     const [loading, setLoading] = useState(false);
     const [isFadingOut, setIsFadingOut] = useState(false);
-    const [shouldFadeIn, setShouldFadeIn] = useState(false);
 
 
     useEffect(() => {
@@ -92,11 +91,6 @@ function Home() {
 
     const handleTitleChange = (event) => {
         setStoryTitle(event.target.value);
-        if (event.target.value.length > 0) {
-            setShouldFadeIn(true);
-        } else {
-            setShouldFadeIn(false);
-        }
     };
 
     const handleStart = async () => {
@@ -191,7 +185,7 @@ function Home() {
                                             className={`fade-in-input ${isFadingOut ? 'fade-out-button' : ''}`}
                                             style={{ padding: 2, borderRadius: '100%', border: 'none', backgroundColor: '#005B81' }}
                                         >
-                                            <FontAwesomeIcon icon={faCirclePlay} color={'#FFFFFF'} backgroundColor={'#005B81'} size="4x" />
+                                            <FontAwesomeIcon icon={faCirclePlay} color={'#FFFFFF'} size="4x" />
                                         </button>
                                     )}
                                 </div>
@@ -216,7 +210,7 @@ function Home() {
                                 <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 40 }}>Click to start</p>
 
                                 <button id="mic-button" onClick={handleMic} style={{ padding: 0, borderRadius: '50%', border: 'none', backgroundColor: '#005B81' }}>
-                                    <FontAwesomeIcon icon={faCirclePlay} color={'#FFFFFF'} backgroundColor={'#005B81'} size="5x" />
+                                    <FontAwesomeIcon icon={faCirclePlay} color={'#FFFFFF'} size="5x" />
                                 </button>
                             </div>
                         )}
