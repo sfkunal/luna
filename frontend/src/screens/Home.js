@@ -11,6 +11,10 @@ function Home() {
     const [showTitle, setShowTitle] = useState(false);
     const [storyTitle, setStoryTitle] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isFadingOut, setIsFadingOut] = useState(false);
+    const [shouldFadeIn, setShouldFadeIn] = useState(false);
+
+
 
 
     useEffect(() => {
@@ -76,22 +80,34 @@ function Home() {
 
     const handleMic = () => {
         if (!listening) {
-            setShowTitle(true);
-            resetTranscript();
+            setIsFadingOut(true);
+            setTimeout(() => {
+                setShowTitle(true);
+                resetTranscript();
+                setIsFadingOut(false);
+            }, 500); //  500ms =  0.5s
         }
         if (listening) {
-            setListening(false);
-            setShowTitle(false);
-            setStoryTitle('');
+            // Add a class to the button to start the fade-out animation
+            setIsFadingOut(true);
+            // Wait for the animation to complete before changing the state
+            setTimeout(() => {
+                setListening(false);
+                setShowTitle(false);
+                setStoryTitle('');
+                setIsFadingOut(false);
+            }, 500); //  500ms =  0.5s
         }
-        //setListening(!listening);
-        // setShowTitle(true);
-        // console.log('listening', listening);
     };
+
 
     const handleTitleChange = (event) => {
         setStoryTitle(event.target.value);
-        // console.log(storyTitle);
+        if (event.target.value.length > 0) {
+            setShouldFadeIn(true);
+        } else {
+            setShouldFadeIn(false);
+        }
     };
 
     const handleStart = async () => {
@@ -99,7 +115,14 @@ function Home() {
             resetTranscript();
         }
         if (storyTitle && storyTitle.length > 0) {
-            setLoading(true); // Start loading
+            setIsFadingOut(true);
+            setTimeout(() => {
+                // Your existing state change logic here
+                setLoading(true); // Start loading
+                setIsFadingOut(false); // Reset the fade-out state
+            }, 500);
+
+
 
             try {
                 const response = await fetch('http://localhost:8000/titleScreen', {
@@ -138,9 +161,9 @@ function Home() {
             }}>
 
                 {!listening && (
-                    <div style ={{ marginTop: '100px'}}>
-                        <p style={{textAlign: 'center', fontSize: '30px', margin: 0, color: 'white' }}>Welcome to</p>
-                        <p style={{textAlign: 'center', fontWeight: 'lighter', fontSize: '120px', margin: 0, color: 'white', textShadow: '0  0  20px rgba(255,  255,  255,  1.0)' }}>luna</p>
+                    <div style={{ marginTop: '100px' }}>
+                        <p style={{ textAlign: 'center', fontSize: '30px', margin: 0, color: 'white' }}>Welcome to</p>
+                        <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '120px', margin: 0, color: 'white', textShadow: '0  0  20px rgba(255,  255,  255,  1.0)' }}>luna</p>
                         <div style={{ height: '15vh' }} />
 
 
@@ -152,12 +175,13 @@ function Home() {
                                         placeholder="Title your story"
                                         value={storyTitle} // Set the input value to the state
                                         onChange={handleTitleChange} // Update the state when the input value changes
+                                        className="fade-in-input"
                                         style={{
                                             width: '250px', // Increase the width
                                             height: '50px', // Increase the height
                                             paddingBottom: '10px', // Add some padding for better appearance
-                                            paddingLeft : '15px',
-                                            paddingTop:'10px',
+                                            paddingLeft: '15px',
+                                            paddingTop: '10px',
                                             borderRadius: '15px', // Increase the border-radius for curvature
                                             border: '1px solid white', // Remove the default border
                                             backgroundColor: 'rgba(0,   91,   129,   0.25)', // Match the background color
@@ -167,37 +191,43 @@ function Home() {
                                             boxShadow: '0  0  10px rgba(255,  255,  255,  0.5)',
                                             '::placeholder': {
                                                 color: 'white',
-                                                opacity:  1, // Make sure the placeholder is fully opaque
+                                                opacity: 1, // Make sure the placeholder is fully opaque
                                             },
                                         }}
                                     />
                                 </div>
                                 <div>
-                                    <button onClick={handleStart} style={{ padding: 2, borderRadius: '100%', border: 'none', backgroundColor: '#005B81' }}>
-                                        <FontAwesomeIcon icon={faCirclePlay} color={'#003B53'} backgroundColor= {'#005B81'} size="4x" />
-                                    </button>
+                                    {storyTitle.length > 0 && (
+                                        <button
+                                            onClick={handleStart}
+                                            className={`fade-in-input ${isFadingOut ? 'fade-out-button' : ''}`}
+                                            style={{ padding: 2, borderRadius: '100%', border: 'none', backgroundColor: '#005B81' }}
+                                        >
+                                            <FontAwesomeIcon icon={faCirclePlay} color={'#FFFFFF'} backgroundColor={'#005B81'} size="4x" />
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         )}
 
                         {(showTitle && loading) && (
-                            <>
-                            <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}> Once upon a time...</p>
-                            <div className="spinner">
-                                <div className="rect1"></div>
-                                <div className="rect2"></div>
-                                <div className="rect3"></div>
-                                <div className="rect4"></div>
-                                <div className="rect5"></div>
+                            <div className='fade-in-input'>
+                                <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}> Once upon a time...</p>
+                                <div className="spinner">
+                                    <div className="rect1"></div>
+                                    <div className="rect2"></div>
+                                    <div className="rect3"></div>
+                                    <div className="rect4"></div>
+                                    <div className="rect5"></div>
+                                </div>
                             </div>
-                            </>
                         )}
 
                         {!showTitle && (
                             <>
                                 <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 40 }}>Click to start</p>
 
-                                <button onClick={handleMic} style={{ padding: 0, borderRadius: '50%', border: 'none' }}>
+                                <button id="mic-button" onClick={handleMic} className={isFadingOut ? 'fade-out' : ''} style={{ padding: 0, borderRadius: '50%', border: 'none' }}>
                                     <FontAwesomeIcon icon={faCirclePlay} color={'gray'} size="5x" />
                                 </button>
                             </>
@@ -219,7 +249,7 @@ function Home() {
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                            {imageUrl && <img src={imageUrl} alt="Generated Image" style={{ width: '90%', height: '90%', borderRadius: '25px', boxShadow: '0  0  8px  3px rgba(255,  255,  255,  0.5)' }} />}
+                            {imageUrl && <img src={imageUrl} alt="Generated Image" loading={"lazy"} style={{ width: '90%', height: '90%', borderRadius: '25px', boxShadow: '0  0  8px  3px rgba(255,  255,  255,  0.5)' }} />}
                         </div>
 
                         <div style={{
@@ -245,7 +275,7 @@ function Home() {
                                 </p>
                             </div>
 
-                            <button className="pulse-button" onClick={handleMic} style={{ animation: 'pulse  2s infinite', marginTop: 30, padding: 20, borderRadius: '50%', border: 'none', backgroundColor: 'white' }}>
+                            <button className={`pulse-button ${isFadingOut ? 'fade-out' : ''}`} onClick={handleMic} style={{ animation: 'pulse   2s infinite', marginTop: 30, padding: 20, borderRadius: '50%', border: 'none', backgroundColor: 'white' }}>
                                 <FontAwesomeIcon icon={faMicrophone} color={'#005B81'} size="3x" />
                             </button>
 
