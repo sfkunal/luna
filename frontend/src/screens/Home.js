@@ -21,7 +21,7 @@ function Home() {
 
             const sendData = async () => {
                 try {
-                    const response = await fetch('http://localhost:8000/transcript', {
+                    const response = await fetch('https://fastapi-production-cd88.up.railway.app/transcript', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ function Home() {
                 setIsFadingOut(false);
             }, 500);
             try {
-                const response = await fetch('http://localhost:8000/titleScreen', {
+                const response = await fetch('https://fastapi-production-cd88.up.railway.app/titleScreen', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
