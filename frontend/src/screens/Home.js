@@ -227,8 +227,8 @@ function Home() {
                             <div className={isFadingOut ? 'fade-out' : ''}>
                                 <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 40 }}>Click to start</p>
 
-                                <button id="mic-button" onClick={handleMic} style={{ padding: 0, borderRadius: '50%', border: 'none' }}>
-                                    <FontAwesomeIcon icon={faCirclePlay} color={'gray'} size="5x" />
+                                <button id="mic-button" onClick={handleMic} style={{ padding: 0, borderRadius: '50%', border: 'none', backgroundColor: '#005B81' }}>
+                                    <FontAwesomeIcon icon={faCirclePlay} color={'#FFFFFF'} backgroundColor={'#005B81'} size="5x" />
                                 </button>
                             </div>
                         )}
