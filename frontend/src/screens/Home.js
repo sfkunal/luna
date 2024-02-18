@@ -15,14 +15,11 @@ function Home() {
     const [shouldFadeIn, setShouldFadeIn] = useState(false);
 
 
-
-
     useEffect(() => {
         const words = transcript.split(' ');
         if (words.length >= 20 && transcript.length > 0) {
-            console.log("chunk:", transcript); // Log the transcript
+            console.log("chunk:", transcript);
 
-            // Function to send data to the Flask app
             const sendData = async () => {
                 try {
                     const response = await fetch('http://localhost:8000/transcript', {
@@ -40,16 +37,13 @@ function Home() {
 
                     const data = await response.json();
                     console.log(data.message);
-                    setImageUrl(data.message); // Set the image URL state
+                    setImageUrl(data.message);
                 } catch (error) {
                     console.error('Network error:', error);
                 }
             };
 
-            // Call the function to send the transcript
             sendData();
-
-            // Reset the transcript
             resetTranscript();
         }
     }, [transcript, resetTranscript]);
@@ -60,7 +54,6 @@ function Home() {
                 continuous: true,
                 onResult: (event) => {
                     const transcript = event.results[event.resultIndex][0].transcript;
-                    // console.log('Transcript:', transcript);
                 },
                 onEnd: () => {
                     SpeechRecognition.stopListening();
@@ -77,7 +70,6 @@ function Home() {
         }
     }, [listening]);
 
-
     const handleMic = () => {
         if (!listening) {
             setIsFadingOut(true);
@@ -85,21 +77,18 @@ function Home() {
                 setShowTitle(true);
                 resetTranscript();
                 setIsFadingOut(false);
-            }, 500); //  500ms =  0.5s
+            }, 500);
         }
         if (listening) {
-            // Add a class to the button to start the fade-out animation
             setIsFadingOut(true);
-            // Wait for the animation to complete before changing the state
             setTimeout(() => {
                 setListening(false);
                 setShowTitle(false);
                 setStoryTitle('');
                 setIsFadingOut(false);
-            }, 500); //  500ms =  0.5s
+            }, 500);
         }
     };
-
 
     const handleTitleChange = (event) => {
         setStoryTitle(event.target.value);
@@ -117,13 +106,9 @@ function Home() {
         if (storyTitle && storyTitle.length > 0) {
             setIsFadingOut(true);
             setTimeout(() => {
-                // Your existing state change logic here
-                setLoading(true); // Start loading
-                setIsFadingOut(false); // Reset the fade-out state
+                setLoading(true);
+                setIsFadingOut(false);
             }, 500);
-
-
-
             try {
                 const response = await fetch('http://localhost:8000/titleScreen', {
                     method: 'POST',
@@ -140,11 +125,11 @@ function Home() {
 
                 const data = await response.json();
                 console.log(data.message);
-                setImageUrl(data.message); // Set the image URL state
+                setImageUrl(data.message);
             } catch (error) {
                 console.error('Network error:', error);
             } finally {
-                setLoading(false); // End loading
+                setLoading(false);
                 setListening(!listening);
                 console.log('listening', listening);
             }
@@ -159,39 +144,42 @@ function Home() {
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-
                 {!listening && (
                     <div style={{ marginTop: '100px', height: '400px' }}>
                         <p style={{ textAlign: 'center', fontSize: '30px', margin: 0, color: 'white' }}>Welcome to</p>
                         <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '120px', margin: 0, color: 'white', textShadow: '0  0  20px rgba(255,  255,  255,  1.0)' }}>luna</p>
                         <div style={{ height: '15vh' }} />
 
-
                         {(showTitle && !loading) && (
-                            <div style={{height: '100px'}}>
+                            <div style={{ height: '100px' }}>
                                 <div>
                                     <input
                                         name="storyTitle"
                                         placeholder="Title your story"
-                                        value={storyTitle} // Set the input value to the state
-                                        onChange={handleTitleChange} // Update the state when the input value changes
+                                        value={storyTitle}
+                                        onChange={handleTitleChange}
+                                        onKeyPress={(event) => {
+                                            if (event.key === 'Enter') {
+                                                handleStart();
+                                            }
+                                        }}
                                         className={`fade-in-input ${isFadingOut ? 'fade-out-button' : ''}`}
                                         style={{
-                                            width: '250px', // Increase the width
-                                            height: '50px', // Increase the height
-                                            paddingBottom: '10px', // Add some padding for better appearance
+                                            width: '250px',
+                                            height: '50px',
+                                            paddingBottom: '10px',
                                             paddingLeft: '15px',
                                             paddingTop: '10px',
-                                            borderRadius: '15px', // Increase the border-radius for curvature
-                                            border: '1px solid white', // Remove the default border
-                                            backgroundColor: 'rgba(0,   91,   129,   0.25)', // Match the background color
-                                            color: 'white', // Text color
-                                            fontSize: '19px', // Increase the font size
-                                            marginBottom: '80px', // Add some margin at the bottom
+                                            borderRadius: '15px',
+                                            border: '1px solid white',
+                                            backgroundColor: 'rgba(0,   91,   129,   0.25)',
+                                            color: 'white',
+                                            fontSize: '19px',
+                                            marginBottom: '80px',
                                             boxShadow: '0  0  10px rgba(255,  255,  255,  0.5)',
                                             '::placeholder': {
                                                 color: 'white',
-                                                opacity: 1, // Make sure the placeholder is fully opaque
+                                                opacity: 1,
                                             },
                                         }}
                                     />
@@ -232,8 +220,6 @@ function Home() {
                                 </button>
                             </div>
                         )}
-
-
                     </div>
                 )}
                 {listening && (
@@ -278,7 +264,6 @@ function Home() {
                             </button>
 
                         </div>
-
                     </div>
                 )}
             </div>
