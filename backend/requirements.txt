@@ -5,3 +5,5 @@ openai
 watchdog
 fastapi
 uvicorn
+pydantic
+python-dotenv

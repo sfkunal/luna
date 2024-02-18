@@ -1,11 +1,11 @@
+import os
 from openai import OpenAI
-import time
+from dotenv import load_dotenv
 
-start_time = time.time()
+load_dotenv()
 
-client = OpenAI(api_key="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")
-
-chunk = 'As the sun began to set over the small town of Willow Creek, the streets were quiet and the only sound was the rustling of leaves in the gentle breeze. The town was known for its peacefulness and tight-knit community, but tonight, something was different.'
+openai_key = os.environ.get('OPENAI_KEY')
+client = OpenAI(api_key=openai_key)
 
 def generate_desc(chunk):
   response = client.completions.create(
@@ -29,10 +29,4 @@ def generate_image_url(image_desc):
   )
 
   image_url = response.data[0].url
-  # print(image_url)
   return image_url
-
-# end_time = time.time()
-# elapsed_time = end_time - start_time
-# print(f"Time taken to generate and print the image: {elapsed_time} seconds")
-

@@ -5,7 +5,6 @@ from generate_media import generate_desc, generate_image_url
 
 app = FastAPI()
 
-# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,7 +22,6 @@ class TranscriptModel(BaseModel):
 
 @app.post("/transcript")
 async def receive_transcript(transcript: TranscriptModel):
-    # Process the transcript here
     print(transcript.transcript)
     image_desc = generate_desc(transcript.transcript)
     print("Image description is ", image_desc)
