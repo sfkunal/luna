@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import './Home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faTimes, faArrowRight, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faTimes, faArrowRight, faCirclePlay } from '@fortawesome/free-solid-svg-icons';
 
 function Home() {
     const { transcript, resetTranscript } = useSpeechRecognition()
@@ -138,10 +138,10 @@ function Home() {
             }}>
 
                 {!listening && (
-                    <div>
-                        <p style={{ textAlign: 'center', fontSize: '30px', margin: 0, color: 'white' }}>Welcome to</p>
-                        <p style={{ textAlign: 'center', fontWeight: 'lighter', fontSize: '120px', margin: 0, color: 'white', textShadow: '0  0  20px rgba(255,  255,  255,  1.0)' }}>luna</p>
-                        <div style={{ height: '40vh' }} />
+                    <div style ={{ marginTop: '100px'}}>
+                        <p style={{textAlign: 'center', fontSize: '30px', margin: 0, color: 'white' }}>Welcome to</p>
+                        <p style={{textAlign: 'center', fontWeight: 'lighter', fontSize: '120px', margin: 0, color: 'white', textShadow: '0  0  20px rgba(255,  255,  255,  1.0)' }}>luna</p>
+                        <div style={{ height: '15vh' }} />
 
 
                         {(showTitle && !loading) && (
@@ -149,26 +149,32 @@ function Home() {
                                 <div>
                                     <input
                                         name="storyTitle"
-                                        placeholder="Title your story?"
+                                        placeholder="Title your story"
                                         value={storyTitle} // Set the input value to the state
                                         onChange={handleTitleChange} // Update the state when the input value changes
                                         style={{
                                             width: '250px', // Increase the width
                                             height: '50px', // Increase the height
-                                            padding: '10px', // Add some padding for better appearance
+                                            paddingBottom: '10px', // Add some padding for better appearance
+                                            paddingLeft : '15px',
+                                            paddingTop:'10px',
                                             borderRadius: '15px', // Increase the border-radius for curvature
                                             border: '1px solid white', // Remove the default border
                                             backgroundColor: 'rgba(0,   91,   129,   0.25)', // Match the background color
                                             color: 'white', // Text color
-                                            fontSize: '16px', // Increase the font size
+                                            fontSize: '19px', // Increase the font size
                                             marginBottom: '80px', // Add some margin at the bottom
-                                            boxShadow: '0  0  10px rgba(255,  255,  255,  0.5)'
+                                            boxShadow: '0  0  10px rgba(255,  255,  255,  0.5)',
+                                            '::placeholder': {
+                                                color: 'white',
+                                                opacity:  1, // Make sure the placeholder is fully opaque
+                                            },
                                         }}
                                     />
                                 </div>
                                 <div>
-                                    <button onClick={handleStart} style={{ padding: 20, borderRadius: '50%', border: 'none', backgroundColor: '#005B81' }}>
-                                        <FontAwesomeIcon icon={faPlay} color={'#003B53'} size="3x" />
+                                    <button onClick={handleStart} style={{ padding: 2, borderRadius: '100%', border: 'none', backgroundColor: '#005B81' }}>
+                                        <FontAwesomeIcon icon={faCirclePlay} color={'#003B53'} backgroundColor= {'#005B81'} size="4x" />
                                     </button>
                                 </div>
                             </div>
@@ -176,7 +182,7 @@ function Home() {
 
                         {(showTitle && loading) && (
                             <>
-                            <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}>Getting all set up...</p>
+                            <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}> Once upon a time...</p>
                             <div className="spinner">
                                 <div className="rect1"></div>
                                 <div className="rect2"></div>
@@ -189,10 +195,10 @@ function Home() {
 
                         {!showTitle && (
                             <>
-                                <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 20 }}>Click to start</p>
+                                <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 40 }}>Click to start</p>
 
-                                <button onClick={handleMic} style={{ padding: 20, borderRadius: '50%', border: 'none' }}>
-                                    <FontAwesomeIcon icon={faPlay} color={'white'} size="3x" />
+                                <button onClick={handleMic} style={{ padding: 0, borderRadius: '50%', border: 'none' }}>
+                                    <FontAwesomeIcon icon={faCirclePlay} color={'gray'} size="5x" />
                                 </button>
                             </>
                         )}
