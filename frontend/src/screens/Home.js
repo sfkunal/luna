@@ -234,8 +234,8 @@ function Home() {
                         <div style={{
                             position: 'absolute',
                             top: '0',
-                            left: '1040px',
-                            right: '0',
+                            left: '1010px',
+                            right: '30px',
                             height: '100%',
                             padding: '16px',
                         }}>
