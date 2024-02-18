@@ -1,7 +1,7 @@
 import './Home.css';
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMicrophone, faCirclePlay } from '@fortawesome/free-solid-svg-icons';
+import { faMicrophone, faCirclePlay, faCircleStop } from '@fortawesome/free-solid-svg-icons';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
 function Home() {
@@ -253,8 +253,8 @@ function Home() {
                                 </p>
                             </div>
 
-                            <button className={`pulse-button ${isFadingOut ? 'fade-out' : ''}`} onClick={handleMic} style={{ animation: 'pulse   2s infinite', marginTop: 30, padding: 20, borderRadius: '50%', border: 'none', backgroundColor: 'white' }}>
-                                <FontAwesomeIcon icon={faMicrophone} color={'#005B81'} size="3x" />
+                            <button className={`pulse-button ${isFadingOut ? 'fade-out' : ''}`} onClick={handleMic} style={{ animation: 'pulse   2s infinite', marginTop: 30, height : "80px", padding:0, width : "80px",  borderRadius: '100%', border: 0 , backgroundColor: '#003B53' }}>
+                                <FontAwesomeIcon icon={faCircleStop} color={'white'} size="4x" />
                             </button>
 
                         </div>
