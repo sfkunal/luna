@@ -175,7 +175,7 @@ function Home() {
                                         placeholder="Title your story"
                                         value={storyTitle} // Set the input value to the state
                                         onChange={handleTitleChange} // Update the state when the input value changes
-                                        className="fade-in-input"
+                                        className={`fade-in-input ${isFadingOut ? 'fade-out-button' : ''}`}
                                         style={{
                                             width: '250px', // Increase the width
                                             height: '50px', // Increase the height
@@ -224,20 +224,20 @@ function Home() {
                         )}
 
                         {!showTitle && (
-                            <>
+                            <div className={isFadingOut ? 'fade-out' : ''}>
                                 <p style={{ textAlign: 'center', fontSize: '20px', margin: 0, color: 'white', marginBottom: 40 }}>Click to start</p>
 
-                                <button id="mic-button" onClick={handleMic} className={isFadingOut ? 'fade-out' : ''} style={{ padding: 0, borderRadius: '50%', border: 'none' }}>
+                                <button id="mic-button" onClick={handleMic} style={{ padding: 0, borderRadius: '50%', border: 'none' }}>
                                     <FontAwesomeIcon icon={faCirclePlay} color={'gray'} size="5x" />
                                 </button>
-                            </>
+                            </div>
                         )}
 
 
                     </div>
                 )}
                 {listening && (
-                    <div style={{}}>
+                    <div className='fade-in-input' style={{}}>
                         <div style={{
                             position: 'absolute',
                             top: '0',
